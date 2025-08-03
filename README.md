@@ -23,6 +23,27 @@ pnpm add redditify
 
 ## Usage
 
+
+### Auto-Embedding Script
+
+You can use the auto-embedding script to automatically render Reddit threads on any HTML page without writing any JavaScript code. This method is completely framework-agnostic and doesn't require React or any other dependencies to be included separately.
+
+#### Basic Usage
+
+1. Include the Reddit Thread Viewer script:
+
+```html
+<script src="https://unpkg.com/redditify/dist/redditify.umd.js"></script>
+```
+
+2. Add divs with the `data-reddit-thread` attribute:
+
+```html
+<div 
+  data-reddit-thread="https://www.reddit.com/r/PHP/comments/1m78ww6/morethanone_class_per_file_motoautoload"
+></div>
+```
+
 ### React Component Usage
 
 #### Basic Usage
@@ -62,26 +83,6 @@ function App() {
     </div>
   );
 }
-```
-
-### Auto-Embedding Script
-
-You can use the auto-embedding script to automatically render Reddit threads on any HTML page without writing any JavaScript code. This method is completely framework-agnostic and doesn't require React or any other dependencies to be included separately.
-
-#### Basic Usage
-
-1. Include the Reddit Thread Viewer script:
-
-```html
-<script src="https://unpkg.com/redditify/dist/redditify.umd.js"></script>
-```
-
-2. Add divs with the `data-reddit-thread` attribute:
-
-```html
-<div 
-  data-reddit-thread="https://www.reddit.com/r/PHP/comments/1m78ww6/morethanone_class_per_file_motoautoload"
-></div>
 ```
 
 #### Advanced Usage with Data Attributes
