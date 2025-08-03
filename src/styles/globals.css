@@ -77,8 +77,8 @@
 
 /* Custom styling for Reddit comments and post content */
 
-.comment-body,
-.reddit-post-text {
+.comment-body *,
+.reddit-post-text * {
     @apply text-sm/5;
 }
 
