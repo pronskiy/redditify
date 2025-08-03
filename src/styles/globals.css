@@ -76,6 +76,12 @@
 }
 
 /* Custom styling for Reddit comments and post content */
+
+.comment-body,
+.reddit-post-text {
+    @apply text-sm/5;
+}
+
 /* Code blocks */
 .comment-body pre,
 .comment-body code,
