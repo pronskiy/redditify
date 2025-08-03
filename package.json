@@ -1,5 +1,5 @@
 {
-  "name": "reddit-thread-viewer",
+  "name": "@pronskiy/reddit-embed",
   "version": "0.1.0",
   "description": "A TypeScript package for rendering Reddit threads on any webpage",
   "main": "dist/index.js",
@@ -24,7 +24,7 @@
     "tailwind",
     "shadcn"
   ],
-  "author": "",
+  "author": "Roman Pronskiy <roman@pronskiy.com>",
   "license": "MIT",
   "peerDependencies": {
     "react": "^18.2.0",
