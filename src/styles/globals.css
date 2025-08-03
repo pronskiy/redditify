@@ -74,3 +74,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom styling for code blocks in Reddit comments */
+.comment-body pre,
+.comment-body code {
+  @apply bg-reddit-lightGray dark:bg-gray-800 rounded px-1;
+}
+
+.comment-body pre {
+  @apply p-3 my-2 overflow-x-auto;
+}

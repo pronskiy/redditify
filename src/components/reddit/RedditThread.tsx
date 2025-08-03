@@ -48,7 +48,7 @@ export default function RedditThread({
 
   if (loading) {
     return (
-      <div className={cn("reddit-thread-loading p-4 rounded-md bg-reddit-lightGray dark:bg-reddit-darkGray", className)}>
+      <div className={cn("reddit-thread-loading p-4 rounded-md bg-white dark:bg-reddit-darkGray border border-gray-200 dark:border-gray-800", className)}>
         <div className="animate-pulse space-y-4">
           <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-3/4"></div>
           <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-1/2"></div>
@@ -73,7 +73,7 @@ export default function RedditThread({
 
   if (!post) {
     return (
-      <div className={cn("reddit-thread-empty p-4 rounded-md bg-reddit-lightGray dark:bg-reddit-darkGray", className)}>
+      <div className={cn("reddit-thread-empty p-4 rounded-md bg-white dark:bg-reddit-darkGray border border-gray-200 dark:border-gray-800", className)}>
         <p className="text-gray-500 dark:text-gray-400">No thread data available</p>
       </div>
     );
@@ -87,7 +87,7 @@ export default function RedditThread({
         <RedditPostContent post={post} />
       )}
       
-      <div className="reddit-comments p-2 md:p-4 bg-reddit-lightGray dark:bg-reddit-darkGray">
+      <div className="reddit-comments p-2 md:p-4 bg-white dark:bg-reddit-darkGray">
         <RedditCommentList 
           comments={comments} 
           maxDepth={maxCommentDepth} 
