@@ -80,7 +80,6 @@ module.exports = {
     },
   },
   plugins: [
-      require("tailwindcss-animate"),
       scopedPreflightStyles({
           isolationStrategy: isolateInsideOfContainer('.redditify'),
       }),
