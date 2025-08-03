@@ -1,6 +1,6 @@
 {
   "name": "redditify",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "A framework-agnostic package for embedding Reddit threads on any webpage",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -54,6 +54,7 @@
     "date-fns": "^3.0.6",
     "lucide-react": "^0.303.0",
     "tailwind-merge": "^2.2.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "tailwindcss-scoped-preflight": "^3.4.12"
   }
 }
