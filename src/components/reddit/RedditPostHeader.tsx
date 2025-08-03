@@ -32,7 +32,14 @@ export default function RedditPostHeader({ post }: RedditPostHeaderProps) {
           u/{data.author}
         </a>
         <span className="mx-1">•</span>
-        <span>{formatRedditDate(data.created_utc)}</span>
+        <a 
+          href={`https://www.reddit.com${data.permalink}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:underline"
+        >
+          {formatRedditDate(data.created_utc)}
+        </a>
         
         {data.link_flair_text && (
           <>
