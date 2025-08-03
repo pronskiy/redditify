@@ -14,11 +14,11 @@ A TypeScript package that allows rendering arbitrary Reddit threads on any webpa
 ## Installation
 
 ```bash
-npm install reddit-thread-viewer
+npm install @pronskiy/reddit-embed
 # or
-yarn add reddit-thread-viewer
+yarn add @pronskiy/reddit-embed
 # or
-pnpm add reddit-thread-viewer
+pnpm add @pronskiy/reddit-embed
 ```
 
 ## Usage
@@ -28,8 +28,8 @@ pnpm add reddit-thread-viewer
 #### Basic Usage
 
 ```jsx
-import { RedditThread } from 'reddit-thread-viewer';
-import 'reddit-thread-viewer/dist/style.css'; // Import styles
+import { RedditThread } from '@pronskiy/reddit-embed';
+import '@pronskiy/reddit-embed/dist/style.css'; // Import styles
 
 function App() {
   return (
@@ -45,8 +45,8 @@ function App() {
 #### Advanced Usage
 
 ```jsx
-import { RedditThread } from 'reddit-thread-viewer';
-import 'reddit-thread-viewer/dist/style.css'; // Import styles
+import { RedditThread } from '@pronskiy/reddit-embed';
+import '@pronskiy/reddit-embed/dist/style.css'; // Import styles
 
 function App() {
   return (
@@ -66,24 +66,17 @@ function App() {
 
 ### Auto-Embedding Script
 
-You can also use the auto-embedding script to automatically render Reddit threads on any HTML page without writing any JavaScript code.
+You can use the auto-embedding script to automatically render Reddit threads on any HTML page without writing any JavaScript code. This method is completely framework-agnostic and doesn't require React or any other dependencies to be included separately.
 
 #### Basic Usage
 
-1. Include React and ReactDOM from CDN:
+1. Include the Reddit Thread Viewer script:
 
 ```html
-<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@pronskiy/reddit-embed/dist/reddit-embed.umd.js"></script>
 ```
 
-2. Include the Reddit Thread Viewer script:
-
-```html
-<script src="https://unpkg.com/reddit-thread-viewer/dist/reddit-embed.umd.js"></script>
-```
-
-3. Add divs with the `data-reddit-thread` attribute:
+2. Add divs with the `data-reddit-thread` attribute:
 
 ```html
 <div 

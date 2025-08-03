@@ -18,8 +18,89 @@ import './styles/globals.css';
  * ></div>
  */
 
+// Function to inject CSS styles
+function injectStyles() {
+  // Create a style element
+  const styleElement = document.createElement('style');
+  styleElement.id = 'reddit-embed-styles';
+  
+  // Add the styles
+  styleElement.textContent = `
+    /* Base Reddit embed styles */
+    .reddit-thread {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      border-radius: 0.375rem;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      background-color: white;
+      color: #1a1a1b;
+    }
+    
+    .reddit-thread-error {
+      padding: 1rem;
+      color: #ef4444;
+      background-color: #fee2e2;
+      border: 1px solid #fecaca;
+      border-radius: 0.375rem;
+    }
+    
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+      .reddit-thread {
+        background-color: #1a1a1b;
+        color: #d7dadc;
+        border-color: #343536;
+      }
+      
+      .reddit-thread-error {
+        background-color: rgba(239, 68, 68, 0.1);
+        color: #f87171;
+        border-color: rgba(239, 68, 68, 0.2);
+      }
+    }
+    
+    /* Comment styling */
+    .comment-body a {
+      color: #0079d3;
+      text-decoration: underline;
+    }
+    
+    .comment-body pre,
+    .comment-body code {
+      background-color: #f6f7f8;
+      border-radius: 0.25rem;
+      padding: 0 0.25rem;
+    }
+    
+    .comment-body pre {
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      overflow-x: auto;
+    }
+    
+    /* Dark mode for comment styling */
+    @media (prefers-color-scheme: dark) {
+      .comment-body a {
+        color: #4da3ff;
+      }
+      
+      .comment-body pre,
+      .comment-body code {
+        background-color: #272729;
+      }
+    }
+  `;
+  
+  // Add the style element to the head
+  document.head.appendChild(styleElement);
+}
+
 // Function to initialize Reddit threads on the page
 function initRedditThreads() {
+  // Inject styles if they don't exist yet
+  if (!document.getElementById('reddit-embed-styles')) {
+    injectStyles();
+  }
   // Find all elements with the data-reddit-thread attribute
   const threadElements = document.querySelectorAll('[data-reddit-thread]');
   

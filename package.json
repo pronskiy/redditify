@@ -1,7 +1,7 @@
 {
   "name": "@pronskiy/reddit-embed",
   "version": "0.1.0",
-  "description": "A TypeScript package for rendering Reddit threads on any webpage",
+  "description": "A framework-agnostic package for embedding Reddit threads on any webpage",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -20,20 +20,23 @@
     "thread",
     "viewer",
     "comments",
-    "react",
+    "embed",
+    "embedding",
+    "framework-agnostic",
+    "standalone",
     "tailwind",
     "shadcn"
   ],
   "author": "Roman Pronskiy <roman@pronskiy.com>",
   "license": "MIT",
   "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
     "@vitejs/plugin-react": "^4.2.1",

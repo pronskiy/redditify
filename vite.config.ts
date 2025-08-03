@@ -26,10 +26,15 @@ export default defineConfig({
       fileName: (format, entryName) => `${entryName}.${format}.js`
     },
     rollupOptions: {
-      // For the main library, keep React as external
-      external: (id) => {
-        // Only treat React and ReactDOM as external for the main library
-        // Include them in the standalone bundle
+      // For the main library entry point, keep React as external
+      // For the auto-embed bundle, include React and ReactDOM
+      external: (id, parentId) => {
+        if (parentId && parentId.includes('auto-embed')) {
+          // Don't mark React as external for auto-embed
+          return false;
+        }
+        
+        // For the main library, React is still external
         if (id === 'react' || id === 'react-dom') {
           return true;
         }
@@ -40,13 +45,8 @@ export default defineConfig({
           react: 'React',
           'react-dom': 'ReactDOM'
         },
-        // Generate a separate standalone bundle that includes React
-        manualChunks: (id) => {
-          if (id.includes('auto-embed')) {
-            return 'reddit-embed';
-          }
-          return undefined;
-        }
+        // Generate a standalone bundle with everything included
+        manualChunks: undefined
       }
     }
   }
