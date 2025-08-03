@@ -23,7 +23,9 @@ pnpm add reddit-thread-viewer
 
 ## Usage
 
-### Basic Usage
+### React Component Usage
+
+#### Basic Usage
 
 ```jsx
 import { RedditThread } from 'reddit-thread-viewer';
@@ -40,7 +42,7 @@ function App() {
 }
 ```
 
-### Advanced Usage
+#### Advanced Usage
 
 ```jsx
 import { RedditThread } from 'reddit-thread-viewer';
@@ -61,6 +63,55 @@ function App() {
   );
 }
 ```
+
+### Auto-Embedding Script
+
+You can also use the auto-embedding script to automatically render Reddit threads on any HTML page without writing any JavaScript code.
+
+#### Basic Usage
+
+1. Include React and ReactDOM from CDN:
+
+```html
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+```
+
+2. Include the Reddit Thread Viewer script:
+
+```html
+<script src="https://unpkg.com/reddit-thread-viewer/dist/reddit-embed.umd.js"></script>
+```
+
+3. Add divs with the `data-reddit-thread` attribute:
+
+```html
+<div 
+  data-reddit-thread="https://www.reddit.com/r/PHP/comments/1m78ww6/morethanone_class_per_file_motoautoload"
+></div>
+```
+
+#### Advanced Usage with Data Attributes
+
+You can customize the thread display using data attributes:
+
+```html
+<div 
+  data-reddit-thread="https://www.reddit.com/r/PHP/comments/1m78ww6/morethanone_class_per_file_motoautoload"
+  data-reddit-max-depth="3"
+  data-reddit-show-content="true"
+  data-reddit-show-controls="true"
+></div>
+```
+
+#### Available Data Attributes
+
+| Attribute | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `data-reddit-thread` | URL | (required) | URL of the Reddit thread to render |
+| `data-reddit-max-depth` | Number | `5` | Maximum depth of nested comments to display |
+| `data-reddit-show-content` | Boolean | `true` | Whether to show the post content |
+| `data-reddit-show-controls` | Boolean | `true` | Whether to show comment controls |
 
 ## Props
 
