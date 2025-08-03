@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { fetchRedditThread } from '../../lib/reddit-service';
+import { useEffect, useState } from 'react';
+import { fetchRedditThread } from '@/lib/reddit-service.ts';
 import { RedditThreadViewerProps, RedditPost, RedditComment } from '../../lib/types';
-import { cn } from '../../lib/utils';
+import { cn } from '@/lib/utils.ts';
 import RedditPostHeader from './RedditPostHeader';
 import RedditPostContent from './RedditPostContent';
 import RedditCommentList from './RedditCommentList';

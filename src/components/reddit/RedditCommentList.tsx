@@ -1,5 +1,4 @@
-import React from 'react';
-import { RedditComment } from '../../lib/types';
+import { RedditComment } from '@/lib/types.ts';
 import RedditCommentItem from './RedditCommentItem';
 
 interface RedditCommentListProps {

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { RedditComment } from '../../lib/types';
-import { formatRedditDate, formatScore, cn } from '../../lib/utils';
-import { parseRedditHtml } from '../../lib/reddit-service';
+import { useState } from 'react';
+import { RedditComment } from '@/lib/types.ts';
+import { formatRedditDate, formatScore, cn } from '@/lib/utils.ts';
+import { parseRedditHtml } from '@/lib/reddit-service.ts';
 import { ArrowUpIcon, ArrowDownIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 import RedditCommentList from './RedditCommentList';
 
