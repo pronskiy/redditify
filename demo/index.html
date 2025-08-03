@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reddit Thread Viewer Demo</title>
+  <script type="module" src="./index.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f6f7f8;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .header {
+      margin-bottom: 20px;
+    }
+    .form {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .form input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .form button {
+      padding: 10px 20px;
+      background-color: #0079d3;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .form button:hover {
+      background-color: #0061a9;
+    }
+    .thread-container {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Reddit Thread Viewer</h1>
+      <p>Enter a Reddit thread URL to view it</p>
+    </div>
+    
+    <div class="form">
+      <input 
+        type="text" 
+        id="thread-url" 
+        placeholder="https://www.reddit.com/r/subreddit/comments/id/title/" 
+        value="https://www.reddit.com/r/PHP/comments/1m78ww6/morethanone_class_per_file_motoautoload.json"
+      >
+      <button id="load-button">Load Thread</button>
+    </div>
+    
+    <div id="thread-container" class="thread-container"></div>
+  </div>
+</body>
+</html>
