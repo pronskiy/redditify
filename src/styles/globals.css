@@ -73,6 +73,9 @@
   body {
     @apply bg-background text-foreground;
   }
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 /* Custom styling for code blocks in Reddit comments */

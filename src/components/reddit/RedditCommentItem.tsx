@@ -45,15 +45,17 @@ export default function RedditCommentItem({
   };
   
   return (
-    <div className={cn(
-      "reddit-comment rounded-md overflow-hidden",
-      currentDepth > 0 && "border-l-2 pl-3 ml-2",
-      currentDepth === 1 && "border-l-blue-500",
-      currentDepth === 2 && "border-l-green-500",
-      currentDepth === 3 && "border-l-yellow-500",
-      currentDepth === 4 && "border-l-purple-500",
-      currentDepth >= 5 && "border-l-gray-500"
-    )}>
+    <div 
+      id={`comment-${data.id}`}
+      className={cn(
+        "reddit-comment rounded-md overflow-hidden",
+        currentDepth > 0 && "border-l-2 pl-3 ml-2",
+        currentDepth === 1 && "border-l-blue-500",
+        currentDepth === 2 && "border-l-green-500",
+        currentDepth === 3 && "border-l-yellow-500",
+        currentDepth === 4 && "border-l-purple-500",
+        currentDepth >= 5 && "border-l-gray-500"
+      )}>
       <div className="comment-header flex items-center text-xs text-gray-500 dark:text-gray-400 mb-1">
         {/* Collapse/Expand button */}
         {showControls && (
@@ -130,21 +132,34 @@ export default function RedditCommentItem({
           >
             Reply
           </a>
-          <button 
-            onClick={() => {
+          <a 
+            href={`#comment-${data.id}`}
+            onClick={(e) => {
+              e.preventDefault();
+              // Get the current page URL without any hash
+              const currentUrl = window.location.href.split('#')[0];
+              // Create a URL with the comment ID as the anchor
+              const shareUrl = `${currentUrl}#comment-${data.id}`;
+              
               if (navigator.share) {
                 navigator.share({
-                  title: `Comment by ${data.author} on Reddit`,
-                  url: `https://www.reddit.com${data.permalink}`
+                  title: `Comment by ${data.author}`,
+                  url: shareUrl
                 }).catch(err => console.error('Error sharing:', err));
               } else {
-                window.open(`https://www.reddit.com${data.permalink}`, '_blank');
+                // Copy to clipboard as fallback
+                navigator.clipboard.writeText(shareUrl)
+                  .then(() => alert('Comment link copied to clipboard!'))
+                  .catch(err => {
+                    console.error('Failed to copy:', err);
+                    window.open(shareUrl, '_blank');
+                  });
               }
             }}
-            className="hover:text-gray-700 dark:hover:text-gray-300 cursor-pointer"
+            className="hover:text-gray-700 dark:hover:text-gray-300 cursor-pointer hover:underline"
           >
             Share
-          </button>
+          </a>
         </div>
       )}
       
