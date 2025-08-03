@@ -73,12 +73,10 @@
   body {
     @apply bg-background text-foreground;
   }
-  html {
-    scroll-behavior: smooth;
-  }
 }
 
-/* Custom styling for code blocks in Reddit comments */
+/* Custom styling for Reddit comments */
+/* Code blocks */
 .comment-body pre,
 .comment-body code {
   @apply bg-reddit-lightGray dark:bg-gray-800 rounded px-1;
@@ -86,4 +84,27 @@
 
 .comment-body pre {
   @apply p-3 my-2 overflow-x-auto;
+}
+
+/* Links */
+.comment-body a {
+  @apply text-reddit-blue dark:text-blue-400 underline hover:text-blue-700 dark:hover:text-blue-300;
+}
+
+/* Lists */
+.comment-body ul {
+  @apply list-disc pl-5 my-2 space-y-1;
+}
+
+.comment-body ol {
+  @apply list-decimal pl-5 my-2 space-y-1;
+}
+
+.comment-body li {
+  @apply mb-1;
+}
+
+.comment-body li > ul,
+.comment-body li > ol {
+  @apply my-1;
 }
