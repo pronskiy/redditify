@@ -64,6 +64,15 @@ export default function RedditPostHeader({ post }: RedditPostHeaderProps) {
         <div className="flex items-center">
           <MessageSquareIcon className="h-4 w-4 text-gray-500 dark:text-gray-400 mr-1" />
           <span>{data.num_comments} comments</span>
+          <span className="mx-2">•</span>
+          <a 
+            href={`https://www.reddit.com${data.permalink}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline cursor-pointer"
+          >
+            Reply
+          </a>
         </div>
       </div>
     </div>
