@@ -5,8 +5,8 @@ A TypeScript package that allows rendering arbitrary Reddit threads on any webpa
 ## Features
 
 - 🧵 Render any Reddit thread by providing its URL
-- 🎨 Styled with Tailwind CSS and shadcn/ui components
-- 🔄 Automatically fetches thread data from Reddit's JSON API
+- 💫 No Reddit API key needed
+- 🔄 Client side rendering
 - 📱 Responsive design that works on mobile and desktop
 - 🌙 Supports light and dark mode
 - 🧩 Easy to embed on any webpage
@@ -14,11 +14,11 @@ A TypeScript package that allows rendering arbitrary Reddit threads on any webpa
 ## Installation
 
 ```bash
-npm install @pronskiy/reddit-embed
+npm install redditify
 # or
-yarn add @pronskiy/reddit-embed
+yarn add redditify
 # or
-pnpm add @pronskiy/reddit-embed
+pnpm add redditify
 ```
 
 ## Usage
@@ -28,8 +28,8 @@ pnpm add @pronskiy/reddit-embed
 #### Basic Usage
 
 ```jsx
-import { RedditThread } from '@pronskiy/reddit-embed';
-import '@pronskiy/reddit-embed/dist/style.css'; // Import styles
+import { RedditThread } from 'redditify';
+import 'redditify/dist/style.css'; // Import styles
 
 function App() {
   return (
@@ -45,8 +45,8 @@ function App() {
 #### Advanced Usage
 
 ```jsx
-import { RedditThread } from '@pronskiy/reddit-embed';
-import '@pronskiy/reddit-embed/dist/style.css'; // Import styles
+import { RedditThread } from 'redditify';
+import 'redditify/dist/style.css'; // Import styles
 
 function App() {
   return (
@@ -73,7 +73,7 @@ You can use the auto-embedding script to automatically render Reddit threads on 
 1. Include the Reddit Thread Viewer script:
 
 ```html
-<script src="https://unpkg.com/@pronskiy/reddit-embed/dist/reddit-embed.umd.js"></script>
+<script src="https://unpkg.com/redditify/dist/redditify.umd.js"></script>
 ```
 
 2. Add divs with the `data-reddit-thread` attribute:

@@ -22,7 +22,7 @@ import './styles/globals.css';
 function injectStyles() {
   // Create a style element
   const styleElement = document.createElement('style');
-  styleElement.id = 'reddit-embed-styles';
+  styleElement.id = 'redditify-styles';
   
   // Add the styles
   styleElement.textContent = `
@@ -98,7 +98,7 @@ function injectStyles() {
 // Function to initialize Reddit threads on the page
 function initRedditThreads() {
   // Inject styles if they don't exist yet
-  if (!document.getElementById('reddit-embed-styles')) {
+  if (!document.getElementById('redditify-styles')) {
     injectStyles();
   }
   // Find all elements with the data-reddit-thread attribute

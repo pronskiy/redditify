@@ -1,5 +1,5 @@
 {
-  "name": "@pronskiy/reddit-embed",
+  "name": "redditify",
   "version": "0.1.0",
   "description": "A framework-agnostic package for embedding Reddit threads on any webpage",
   "main": "dist/index.js",

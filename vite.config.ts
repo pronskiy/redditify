@@ -19,7 +19,7 @@ export default defineConfig({
       // Build multiple entry points
       entry: {
         index: resolve(__dirname, 'src/index.ts'),
-        'reddit-embed': resolve(__dirname, 'src/auto-embed.ts')
+        'redditify': resolve(__dirname, 'src/auto-embed.ts')
       },
       formats: ['es', 'umd'],
       name: 'RedditThreadViewer',
