@@ -1,4 +1,3 @@
-import React from 'react';
 import { RedditPost } from '../../lib/types';
 import { parseRedditHtml } from '../../lib/reddit-service';
 

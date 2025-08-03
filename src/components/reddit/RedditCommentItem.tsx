@@ -167,7 +167,7 @@ export default function RedditCommentItem({
       )}
       
       {/* Replies */}
-      {showReplies && (
+      {showReplies && data.replies && data.replies.data && (
         <div className="comment-replies mt-2">
           <RedditCommentList 
             comments={data.replies.data.children}

@@ -1,4 +1,3 @@
-import React from 'react';
 import { RedditPost } from '../../lib/types';
 import { formatRedditDate, formatScore } from '../../lib/utils';
 import { ArrowUpIcon, ArrowDownIcon, MessageSquareIcon } from 'lucide-react';
