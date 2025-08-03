@@ -1,4 +1,6 @@
-@tailwind base;
+.redditify {
+    @tailwind base;
+}
 @tailwind components;
 @tailwind utilities;
 
