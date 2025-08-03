@@ -51,6 +51,10 @@ export default defineConfig(({ command, mode }) => {
   // For UMD build - single entry point only
   return {
     ...baseConfig,
+    define: {
+      // Replace process.env.NODE_ENV with actual values for browser usage
+      'process.env.NODE_ENV': JSON.stringify('production')
+    },
     build: {
       ...baseConfig.build,
       lib: {
