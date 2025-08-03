@@ -75,36 +75,45 @@
   }
 }
 
-/* Custom styling for Reddit comments */
+/* Custom styling for Reddit comments and post content */
 /* Code blocks */
 .comment-body pre,
-.comment-body code {
+.comment-body code,
+.reddit-post-text pre,
+.reddit-post-text code {
   @apply bg-reddit-lightGray dark:bg-gray-800 rounded px-1;
 }
 
-.comment-body pre {
+.comment-body pre,
+.reddit-post-text pre {
   @apply p-3 my-2 overflow-x-auto;
 }
 
 /* Links */
-.comment-body a {
+.comment-body a,
+.reddit-post-text a {
   @apply text-reddit-blue dark:text-blue-400 underline hover:text-blue-700 dark:hover:text-blue-300;
 }
 
 /* Lists */
-.comment-body ul {
+.comment-body ul,
+.reddit-post-text ul {
   @apply list-disc pl-5 my-2 space-y-1;
 }
 
-.comment-body ol {
+.comment-body ol,
+.reddit-post-text ol {
   @apply list-decimal pl-5 my-2 space-y-1;
 }
 
-.comment-body li {
+.comment-body li,
+.reddit-post-text li {
   @apply mb-1;
 }
 
 .comment-body li > ul,
-.comment-body li > ol {
+.comment-body li > ol,
+.reddit-post-text li > ul,
+.reddit-post-text li > ol {
   @apply my-1;
 }

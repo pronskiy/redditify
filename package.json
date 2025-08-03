@@ -1,6 +1,6 @@
 {
   "name": "redditify",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A framework-agnostic package for embedding Reddit threads on any webpage",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -23,9 +23,7 @@
     "embed",
     "embedding",
     "framework-agnostic",
-    "standalone",
-    "tailwind",
-    "shadcn"
+    "tailwind"
   ],
   "author": "Roman Pronskiy <roman@pronskiy.com>",
   "license": "MIT",
