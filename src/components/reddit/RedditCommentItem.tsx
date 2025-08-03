@@ -120,7 +120,10 @@ export default function RedditCommentItem({
               rel="noopener noreferrer"
               className="flex items-center"
             >
-              <ArrowUpIcon className="h-3 w-3 mr-1 cursor-pointer" />
+              <ArrowUpIcon className="h-3 w-3 cursor-pointer" />
+              <span className="mx-1 text-xs font-medium">
+                {data.score_hidden ? "•" : formatScore(data.score)}
+              </span>
               <ArrowDownIcon className="h-3 w-3 cursor-pointer" />
             </a>
           </div>
