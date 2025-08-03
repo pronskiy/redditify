@@ -80,7 +80,7 @@ export default function RedditThread({
   }
 
   return (
-    <div className={cn("reddit-thread rounded-md overflow-hidden bg-white dark:bg-reddit-darkGray border border-gray-200 dark:border-gray-800", className)}>
+    <div className={cn("redditify reddit-thread rounded-md overflow-hidden bg-white dark:bg-reddit-darkGray border border-gray-200 dark:border-gray-800", className)}>
       <RedditPostHeader post={post} />
       
       {showPostContent && (
