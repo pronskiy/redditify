@@ -15,6 +15,11 @@ export default function RedditCommentList({
   showControls = true,
   currentDepth = 0 
 }: RedditCommentListProps) {
+  // Don't render any comments if maxDepth is 0
+  if (maxDepth === 0) {
+    return null;
+  }
+  
   // Filter out any non-comment items (like "more" items)
   const validComments = comments.filter(comment => 
     comment.kind === 't1' && comment.data && comment.data.body

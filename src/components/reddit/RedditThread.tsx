@@ -87,13 +87,15 @@ export default function RedditThread({
         <RedditPostContent post={post} />
       )}
       
-      <div className="reddit-comments p-2 md:p-4 bg-white dark:bg-reddit-darkGray">
-        <RedditCommentList 
-          comments={comments} 
-          maxDepth={maxCommentDepth} 
-          showControls={showCommentControls} 
-        />
-      </div>
+      {maxCommentDepth > 0 && (
+        <div className="reddit-comments p-2 md:p-4 bg-white dark:bg-reddit-darkGray">
+          <RedditCommentList 
+            comments={comments} 
+            maxDepth={maxCommentDepth} 
+            showControls={showCommentControls} 
+          />
+        </div>
+      )}
     </div>
   );
 }
