@@ -112,11 +112,39 @@ export default function RedditCommentItem({
       {showControls && !collapsed && (
         <div className="comment-actions flex items-center text-xs text-gray-500 dark:text-gray-400 mb-2">
           <div className="flex items-center mr-3">
-            <ArrowUpIcon className="h-3 w-3 mr-1" />
-            <ArrowDownIcon className="h-3 w-3" />
+            <a 
+              href={`https://www.reddit.com${data.permalink}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center"
+            >
+              <ArrowUpIcon className="h-3 w-3 mr-1 cursor-pointer" />
+              <ArrowDownIcon className="h-3 w-3 cursor-pointer" />
+            </a>
           </div>
-          <button className="mr-3 hover:text-gray-700 dark:hover:text-gray-300">Reply</button>
-          <button className="hover:text-gray-700 dark:hover:text-gray-300">Share</button>
+          <a 
+            href={`https://www.reddit.com${data.permalink}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mr-3 hover:text-gray-700 dark:hover:text-gray-300 cursor-pointer"
+          >
+            Reply
+          </a>
+          <button 
+            onClick={() => {
+              if (navigator.share) {
+                navigator.share({
+                  title: `Comment by ${data.author} on Reddit`,
+                  url: `https://www.reddit.com${data.permalink}`
+                }).catch(err => console.error('Error sharing:', err));
+              } else {
+                window.open(`https://www.reddit.com${data.permalink}`, '_blank');
+              }
+            }}
+            className="hover:text-gray-700 dark:hover:text-gray-300 cursor-pointer"
+          >
+            Share
+          </button>
         </div>
       )}
       
