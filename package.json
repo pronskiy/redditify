@@ -1,10 +1,11 @@
 {
   "name": "redditify",
-  "version": "0.1.11",
+  "version": "0.2.0",
   "description": "A vanilla JS package for embedding Reddit threads on any webpage",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/redditify.min.js",
+  "module": "dist/redditify.min.js",
+  "types": "dist/types.d.ts",
+  "style": "dist/redditify.css",
   "files": [
     "dist"
   ],
