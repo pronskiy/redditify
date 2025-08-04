@@ -321,6 +321,24 @@
   margin: 0.25rem 0;
 }
 
+/* Attribution link */
+.reddit-attribution {
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  color: #787c7e;
+  text-align: center;
+  border-top: 1px solid #e5e7eb;
+}
+
+.reddit-attribution a {
+  color: #0079d3;
+  text-decoration: none;
+}
+
+.reddit-attribution a:hover {
+  text-decoration: underline;
+}
+
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
   .redditify {
@@ -365,6 +383,19 @@
   .reddit-thread-loading {
     background-color: #1a1a1b;
     border-color: #343536;
+  }
+  
+  .reddit-attribution {
+    border-color: #343536;
+    color: #818384;
+  }
+  
+  .reddit-attribution a {
+    color: #4da3ff;
+  }
+  
+  .reddit-attribution a:hover {
+    color: #7ab5ff;
   }
   
   .comment-body pre,

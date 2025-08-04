@@ -13,6 +13,7 @@ import { formatRedditDate, formatScore } from '../lib/utils';
  * @param {number} options.maxCommentDepth - Maximum depth of comments to display
  * @param {boolean} options.showPostContent - Whether to show the post content
  * @param {boolean} options.showCommentControls - Whether to show comment controls
+ * @param {boolean} options.showAttribution - Whether to show the attribution link at the bottom
  * @param {Function} options.onError - Error callback function
  * @param {HTMLElement} container - Container element to render the thread in
  */
@@ -22,6 +23,7 @@ export async function createRedditThread(options, container) {
     maxCommentDepth = 5,
     showPostContent = true,
     showCommentControls = true,
+    showAttribution = true, // Default to true
     onError
   } = options;
 
@@ -45,7 +47,8 @@ export async function createRedditThread(options, container) {
     renderThread(post, comments, {
       maxCommentDepth,
       showPostContent,
-      showCommentControls
+      showCommentControls,
+      showAttribution
     }, container);
   } catch (error) {
     console.error('Error loading Reddit thread:', error);
@@ -107,7 +110,7 @@ function renderEmptyState(container) {
  * @param {HTMLElement} container - Container element
  */
 function renderThread(post, comments, options, container) {
-  const { maxCommentDepth, showPostContent, showCommentControls } = options;
+  const { maxCommentDepth, showPostContent, showCommentControls, showAttribution } = options;
   
   // Set container class
   container.className = 'redditify reddit-thread';
@@ -131,11 +134,22 @@ function renderThread(post, comments, options, container) {
     `;
   }
   
+  // Create attribution link if needed
+  let attributionSection = '';
+  if (showAttribution) {
+    attributionSection = `
+      <div class="reddit-attribution">
+        Rendered with <a href="https://github.com/pronskiy/redditify" target="_blank" rel="noopener noreferrer">redditify</a>
+      </div>
+    `;
+  }
+  
   // Set the HTML
   container.innerHTML = `
     ${postHeader}
     ${postContent}
     ${commentsSection}
+    ${attributionSection}
   `;
   
   // Add event listeners for comment collapsing

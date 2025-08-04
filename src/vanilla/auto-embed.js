@@ -10,7 +10,15 @@
  *   data-reddit-max-depth="5"
  *   data-reddit-show-content="true"
  *   data-reddit-show-controls="true"
+ *   data-reddit-show-attribution="true"
  * ></div>
+ * 
+ * Configuration options:
+ * - data-reddit-thread: (required) URL of the Reddit thread to embed
+ * - data-reddit-max-depth: (optional) Maximum depth of comments to display (default: 5)
+ * - data-reddit-show-content: (optional) Whether to show the post content (default: true)
+ * - data-reddit-show-controls: (optional) Whether to show comment controls (default: true)
+ * - data-reddit-show-attribution: (optional) Whether to show the attribution link at the bottom (default: true)
  */
 
 import { createRedditThread } from './reddit-thread';
@@ -168,6 +176,7 @@ function initRedditThreads() {
     const maxDepth = parseInt(element.getAttribute('data-reddit-max-depth') || '5', 10);
     const showContent = element.getAttribute('data-reddit-show-content') !== 'false';
     const showControls = element.getAttribute('data-reddit-show-controls') !== 'false';
+    const showAttribution = element.getAttribute('data-reddit-show-attribution') !== 'false';
     
     try {
       // Create the Reddit thread
@@ -176,6 +185,7 @@ function initRedditThreads() {
         maxCommentDepth: maxDepth,
         showPostContent: showContent,
         showCommentControls: showControls,
+        showAttribution: showAttribution,
         onError: (error) => {
           console.error('Error loading Reddit thread:', error);
           element.className = 'reddit-thread-error';

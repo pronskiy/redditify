@@ -98,6 +98,7 @@
       <h3>Features:</h3>
       <ul class="features">
         <li><strong>Collapsible Comments</strong> - Click the [-] button next to a comment author to collapse both the comment content and its replies</li>
+        <li><strong>Attribution Link</strong> - Optional attribution link at the bottom of the widget (can be turned off)</li>
         <li>Customizable display options</li>
         <li>Responsive design</li>
         <li>Dark mode support</li>
@@ -140,6 +141,20 @@
         data-reddit-max-depth="0"
         data-reddit-show-content="true"
         data-reddit-show-controls="false"
+      ></div>
+    </div>
+    
+    <div class="demo-section">
+      <h2>Without Attribution Link</h2>
+      <p>Hide the attribution link at the bottom using <code>data-reddit-show-attribution="false"</code>:</p>
+      
+      <div 
+        class="thread-container"
+        data-reddit-thread="https://www.reddit.com/r/PHP/comments/1mgg1hf/swf_parser_and_extractor_in_php/"
+        data-reddit-max-depth="5"
+        data-reddit-show-content="true"
+        data-reddit-show-controls="true"
+        data-reddit-show-attribution="false"
       ></div>
     </div>
   </div>

@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       createRedditThread({ 
         url: url,
-        maxCommentDepth: 5,
+        maxCommentDepth: 10,
         showPostContent: false,
         showCommentControls: true,
         onError: (error) => {
