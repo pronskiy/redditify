@@ -1,14 +1,15 @@
 # Redditify
 
-A vanilla JavaScript package that allows rendering arbitrary Reddit threads on any webpage. The package fetches JSON data from Reddit and renders a UI that closely resembles the original Reddit thread design, without any framework dependencies.
+A vanilla JavaScript package that allows rendering arbitrary Reddit threads on any webpage. 
+
+The package fetches JSON data from Reddit and renders a UI that closely resembles the original Reddit thread design, without any framework dependencies.
 
 ## Features
 
 - 🧵 Render any Reddit thread by providing its URL
 - 💫 No Reddit API key needed
-- 🔄 Client side rendering
+- 🍦 Vanilla JS, ony l1 external dependency
 - 📱 Responsive design that works on mobile and desktop
-- 🌙 Supports light and dark mode
 - 🧩 Easy to embed on any webpage
 - 📂 Collapsible comments - hide/show comment content and replies
 - 🔗 Optional attribution link - can be turned on/off
