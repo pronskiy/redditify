@@ -1,10 +1,5 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { RedditThread } from './index';
-import './styles/globals.css';
-
 /**
- * Auto-embedding script for Reddit Thread Viewer
+ * Auto-embedding script for Reddit Thread Viewer (Vanilla JS version)
  * 
  * This script automatically finds all elements with the data-reddit-thread attribute
  * and renders a Reddit thread inside them.
@@ -17,6 +12,9 @@ import './styles/globals.css';
  *   data-reddit-show-controls="true"
  * ></div>
  */
+
+import { createRedditThread } from './reddit-thread';
+import '../styles/vanilla.css';
 
 // Function to inject CSS styles
 function injectStyles() {
@@ -89,6 +87,52 @@ function injectStyles() {
         background-color: #272729;
       }
     }
+
+    /* Loading animation */
+    .loading-pulse {
+      padding: 1rem;
+    }
+    
+    .loading-line, .loading-block {
+      background-color: #e5e7eb;
+      border-radius: 0.25rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .loading-line {
+      height: 1rem;
+    }
+    
+    .loading-line:nth-child(1) {
+      width: 75%;
+    }
+    
+    .loading-line:nth-child(2) {
+      width: 50%;
+    }
+    
+    .loading-block {
+      height: 8rem;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .loading-line, .loading-block {
+        background-color: #343536;
+      }
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+    
+    .loading-pulse > * {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
   `;
   
   // Add the style element to the head
@@ -101,6 +145,7 @@ function initRedditThreads() {
   if (!document.getElementById('redditify-styles')) {
     injectStyles();
   }
+  
   // Find all elements with the data-reddit-thread attribute
   const threadElements = document.querySelectorAll('[data-reddit-thread]');
   
@@ -125,29 +170,29 @@ function initRedditThreads() {
     const showControls = element.getAttribute('data-reddit-show-controls') !== 'false';
     
     try {
-      // Create a React root for this element
-      const root = createRoot(element as HTMLElement);
-      
-      // Render the Reddit thread component
-      root.render(
-        React.createElement(RedditThread, {
-          url,
-          maxCommentDepth: maxDepth,
-          showPostContent: showContent,
-          showCommentControls: showControls,
-          onError: (error) => {
-            console.error('Error loading Reddit thread:', error);
-            root.render(
-              React.createElement('div', { className: 'reddit-thread-error' },
-                `Error loading Reddit thread: ${error.message}`
-              )
-            );
-          }
-        })
-      );
+      // Create the Reddit thread
+      createRedditThread({
+        url,
+        maxCommentDepth: maxDepth,
+        showPostContent: showContent,
+        showCommentControls: showControls,
+        onError: (error) => {
+          console.error('Error loading Reddit thread:', error);
+          element.className = 'reddit-thread-error';
+          element.innerHTML = `
+            <div class="reddit-thread-error">
+              Error loading Reddit thread: ${error.message}
+            </div>
+          `;
+        }
+      }, element);
     } catch (error) {
       console.error('Error rendering Reddit thread:', error);
-      element.innerHTML = `<div class="reddit-thread-error">Error rendering Reddit thread: ${error instanceof Error ? error.message : 'Unknown error'}</div>`;
+      element.innerHTML = `
+        <div class="reddit-thread-error">
+          Error rendering Reddit thread: ${error instanceof Error ? error.message : 'Unknown error'}
+        </div>
+      `;
     }
   });
 }

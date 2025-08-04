@@ -1,5 +1,4 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
 import dts from 'vite-plugin-dts';
 import { resolve } from 'path';
 
@@ -8,7 +7,6 @@ export default defineConfig(({ command, mode }) => {
   // Base configuration shared between builds
   const baseConfig = {
     plugins: [
-      react(),
       dts({ include: ['src'] })
     ],
     resolve: {
@@ -29,18 +27,17 @@ export default defineConfig(({ command, mode }) => {
         ...baseConfig.build,
         lib: {
           entry: {
-            index: resolve(__dirname, 'src/index.ts'),
-            'redditify': resolve(__dirname, 'src/auto-embed.ts')
+            index: resolve(__dirname, 'src/vanilla/index.js'),
+            'redditify': resolve(__dirname, 'src/vanilla/auto-embed.js')
           },
           formats: ['es'],
           fileName: (format, entryName) => `${entryName}.${format}.js`
         },
         rollupOptions: {
-          external: ['react', 'react-dom'],
+          external: ['date-fns'],
           output: {
             globals: {
-              react: 'React',
-              'react-dom': 'ReactDOM'
+              'date-fns': 'dateFns'
             }
           }
         }
@@ -58,18 +55,17 @@ export default defineConfig(({ command, mode }) => {
     build: {
       ...baseConfig.build,
       lib: {
-        entry: resolve(__dirname, 'src/auto-embed.ts'),
+        entry: resolve(__dirname, 'src/vanilla/auto-embed.js'),
         formats: ['umd'],
         name: 'RedditThreadViewer',
         fileName: () => 'redditify.umd.js'
       },
       rollupOptions: {
-        // Don't mark React as external for UMD build
-        external: [],
+        // Mark date-fns as external for UMD build
+        external: ['date-fns'],
         output: {
           globals: {
-            react: 'React',
-            'react-dom': 'ReactDOM'
+            'date-fns': 'dateFns'
           },
           // Generate a standalone bundle with everything included
           manualChunks: undefined

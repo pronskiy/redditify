@@ -43,16 +43,47 @@
       font-family: monospace;
     }
   </style>
-  <!-- No need to load React and ReactDOM separately, they're bundled with our script -->
-  
   <!-- Load our auto-embed script (this would be the built version in production) -->
   <script type="module">
     // In production, this would be a direct script tag to the built file
     // For development, we'll import it directly
-    import '../src/auto-embed.ts';
+    import '../src/vanilla/auto-embed.js';
   </script>
 </head>
 <body>
+<nav class="mx-auto flex max-w-7xl items-center justify-between relative">
+    <div class="absolute inset-x-0 bottom-0 h-px bg-slate-900/5"></div>
+    <div class="flex lg:flex-1 items-center gap-4">
+        <a href="/" class="-m-1.5 p-1.5">
+            <img class="h-16 w-auto" src="/assets/icons/php_foundation.svg" alt="PHP Foundation">
+        </a>
+        <span class="text-[#27282c] font-semibold text-sm md:text-xl" itemprop="headline">The PHP Foundation</span>
+    </div>
+    <div class="flex lg:hidden">
+        <button type="button" @click="isOpen = true" class="m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
+            </svg>
+        </button>
+    </div>
+    <div class="hidden lg:flex lg:gap-x-12" itemscope="" itemtype="https://schema.org/SiteNavigationElement">
+        <a href="/structure" class="text-gray-700 hover:underline" itemprop="url">Who we are</a>
+
+        <a href="/foundation" class="text-gray-700 hover:underline" itemprop="url">What we do</a>
+
+        <a href="/blog" class="text-gray-700 hover:underline" itemprop="url">News</a>
+
+        <a href="/presentations" class="text-gray-700 hover:underline" itemprop="url">Talks</a>
+
+        <a href="/contact" class="text-gray-700 hover:underline" itemprop="url">Contact</a>
+    </div>
+    <div class="hidden lg:flex lg:flex-1 lg:justify-end items-center gap-8">
+        <a href="https://php.net" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold leading-6 text-gray-700 nav-org hover:border-none hover:underline">
+            php.net</a>
+
+        <a href="/sponsor" class="button-link">Sponsor</a>
+    </div>
+</nav>
   <div class="container">
     <div class="header">
       <h1>Reddit Thread Auto-Embed Demo</h1>

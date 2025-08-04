@@ -1,15 +1,11 @@
-import { RedditThread } from '../src/index';
-import React from 'react';
-import { createRoot } from 'react-dom/client';
+import { createRedditThread } from '../src/index';
+import '../src/styles/vanilla.css';
 
 // Wait for DOM to be ready
 document.addEventListener('DOMContentLoaded', () => {
   const threadContainer = document.getElementById('thread-container');
   const threadUrlInput = document.getElementById('thread-url');
   const loadButton = document.getElementById('load-button');
-  
-  // Create React root
-  const root = createRoot(threadContainer);
   
   // Function to load and render thread
   const loadThread = () => {
@@ -25,38 +21,31 @@ document.addEventListener('DOMContentLoaded', () => {
       ? url.substring(0, url.length - 5) 
       : url;
     
-    // Render loading state
-    root.render(
-      React.createElement('div', { className: 'loading' }, 
-        'Loading thread...'
-      )
-    );
-    
-    // Render the Reddit thread component
+    // Render the Reddit thread using vanilla JS
     try {
-      root.render(
-        React.createElement(RedditThread, { 
-          url: url,
-          maxCommentDepth: 5,
-          showPostContent: false,
-          showCommentControls: true,
-          onError: (error) => {
-            console.error('Error loading thread:', error);
-            root.render(
-              React.createElement('div', { className: 'error' }, 
-                `Error loading thread: ${error.message}`
-              )
-            );
-          }
-        })
-      );
+      createRedditThread({ 
+        url: url,
+        maxCommentDepth: 5,
+        showPostContent: false,
+        showCommentControls: true,
+        onError: (error) => {
+          console.error('Error loading thread:', error);
+          threadContainer.className = 'redditify reddit-thread-error';
+          threadContainer.innerHTML = `
+            <div class="error">
+              Error loading thread: ${error.message}
+            </div>
+          `;
+        }
+      }, threadContainer);
     } catch (error) {
       console.error('Error rendering thread:', error);
-      root.render(
-        React.createElement('div', { className: 'error' }, 
-          `Error rendering thread: ${error.message}`
-        )
-      );
+      threadContainer.className = 'redditify reddit-thread-error';
+      threadContainer.innerHTML = `
+        <div class="error">
+          Error rendering thread: ${error.message}
+        </div>
+      `;
     }
   };
   

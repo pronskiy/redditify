@@ -1,10 +1,5 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
 import { formatDistanceToNow } from "date-fns";
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
 
 export function formatRedditDate(timestamp: number): string {
   const date = new Date(timestamp * 1000);
