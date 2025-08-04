@@ -137,6 +137,41 @@ function renderThread(post, comments, options, container) {
     ${postContent}
     ${commentsSection}
   `;
+  
+  // Add event listeners for comment collapsing
+  setupCommentCollapsing(container);
+}
+
+/**
+ * Sets up event listeners for comment collapsing
+ * @param {HTMLElement} container - Container element
+ */
+function setupCommentCollapsing(container) {
+  // Find all collapse buttons
+  const collapseButtons = container.querySelectorAll('.reddit-comment-collapse-button');
+  
+  // Add click event listeners to each button
+  collapseButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      // Find the parent comment element
+      const commentElement = this.closest('.reddit-comment');
+      
+      if (commentElement) {
+        // Toggle collapsed state
+        if (commentElement.classList.contains('collapsed')) {
+          // Expand
+          commentElement.classList.remove('collapsed');
+          this.textContent = '[−]';
+          this.setAttribute('data-action', 'collapse');
+        } else {
+          // Collapse
+          commentElement.classList.add('collapsed');
+          this.textContent = '[+]';
+          this.setAttribute('data-action', 'expand');
+        }
+      }
+    });
+  });
 }
 
 /**
@@ -157,7 +192,7 @@ function createPostHeader(post) {
         </a>
       </div>
       <h2 class="reddit-post-title">
-        <a href="${data.url}" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.reddit.com${data.permalink}" target="_blank" rel="noopener noreferrer">
           ${data.title}
         </a>
       </h2>
@@ -278,6 +313,7 @@ function createCommentItem(comment, maxDepth, showControls, currentDepth) {
   
   // Create child comments if any
   let childComments = '';
+  let hasReplies = false;
   if (data.replies && data.replies.data && data.replies.data.children.length > 0 && currentDepth < maxDepth) {
     childComments = createCommentList(
       data.replies.data.children,
@@ -285,6 +321,7 @@ function createCommentItem(comment, maxDepth, showControls, currentDepth) {
       showControls,
       currentDepth + 1
     );
+    hasReplies = true;
   }
   
   // Create controls if needed
@@ -299,10 +336,16 @@ function createCommentItem(comment, maxDepth, showControls, currentDepth) {
     `;
   }
   
+  // Create collapse button if there are replies or content
+  const collapseButton = `
+    <span class="reddit-comment-collapse-button" data-action="collapse">[−]</span>
+  `;
+  
   return `
-    <li class="reddit-comment">
+    <li class="reddit-comment" id="comment-${data.id}">
       <div class="reddit-comment-content">
         <div class="reddit-comment-header">
+          ${collapseButton}
           <a href="https://www.reddit.com/user/${data.author}" target="_blank" rel="noopener noreferrer" class="reddit-comment-author">
             ${data.author}
           </a>

@@ -42,6 +42,13 @@
       border-radius: 4px;
       font-family: monospace;
     }
+    .features {
+      margin: 20px 0;
+      padding-left: 20px;
+    }
+    .features li {
+      margin-bottom: 8px;
+    }
   </style>
   <!-- Load our auto-embed script (this would be the built version in production) -->
   <script type="module">
@@ -88,12 +95,13 @@
     <div class="header">
       <h1>Reddit Thread Auto-Embed Demo</h1>
       <p>This page demonstrates how to automatically embed Reddit threads using data attributes.</p>
-        <ul>
-            <li>list items</li>
-            <li>list items</li>
-            <li>list items</li>
-            <li>list items</li>
-        </ul>
+      <h3>Features:</h3>
+      <ul class="features">
+        <li><strong>Collapsible Comments</strong> - Click the [-] button next to a comment author to collapse both the comment content and its replies</li>
+        <li>Customizable display options</li>
+        <li>Responsive design</li>
+        <li>Dark mode support</li>
+      </ul>
     </div>
     
     <div class="demo-section">

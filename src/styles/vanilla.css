@@ -124,6 +124,35 @@
   margin-bottom: 0.75rem;
 }
 
+/* Collapsible comments */
+.reddit-comment-collapse-button {
+  cursor: pointer;
+  color: #787c7e;
+  font-size: 0.75rem;
+  margin-right: 0.5rem;
+  user-select: none;
+}
+
+.reddit-comment-collapse-button:hover {
+  color: #0079d3;
+}
+
+.reddit-comment.collapsed > .reddit-comment-content {
+  padding-bottom: 0.25rem;
+}
+
+.reddit-comment.collapsed > .reddit-comment-content .reddit-comment-body {
+  display: none;
+}
+
+.reddit-comment.collapsed > .reddit-comment-content .reddit-comment-controls {
+  display: none;
+}
+
+.reddit-comment.collapsed > .reddit-comment-list {
+  display: none;
+}
+
 .reddit-comment-content {
   padding: 0.5rem;
   border-radius: 0.25rem;
