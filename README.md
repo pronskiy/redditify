@@ -2,13 +2,13 @@
 
 A vanilla JavaScript package that allows rendering arbitrary Reddit threads on any webpage. 
 
-The package fetches JSON data from Reddit and renders a UI that closely resembles the original Reddit thread design, without any framework dependencies.
+The package fetches JSON data from Reddit and renders a UI that resembles the original Reddit thread design.
 
 ## Features
 
 - 🧵 Render any Reddit thread by providing its URL
 - 💫 No Reddit API key needed
-- 🍦 Vanilla JS, ony l1 external dependency
+- 🍦 Vanilla JS, ony 1 external dependency
 - 📱 Responsive design that works on mobile and desktop
 - 🧩 Easy to embed on any webpage
 - 📂 Collapsible comments - hide/show comment content and replies
@@ -24,14 +24,6 @@ yarn add redditify
 pnpm add redditify
 ```
 
-When using the JavaScript API, don't forget to import the CSS:
-
-```javascript
-import 'redditify/dist/redditify.css';
-```
-
-The auto-embedding script includes the CSS automatically, so you don't need to import it separately.
-
 ### CDN Usage
 
 For quick implementation without npm, you can use the CDN version:
@@ -39,6 +31,7 @@ For quick implementation without npm, you can use the CDN version:
 ```html
 <!-- Include from CDN -->
 <script src="https://cdn.jsdelivr.net/npm/redditify/dist/redditify.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/redditify/dist/redditify.css">
 ```
 
 ## Usage
