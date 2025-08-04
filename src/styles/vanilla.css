@@ -104,8 +104,8 @@
 
 .reddit-post-text {
   font-size: 0.875rem;
-  line-height: 1.5;
-  white-space: pre-wrap;
+  line-height: 1.25;
+  /*white-space: pre-wrap;*/
 }
 
 /* Comments section */

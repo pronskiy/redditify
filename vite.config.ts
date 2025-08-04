@@ -61,12 +61,10 @@ export default defineConfig(({ command, mode }) => {
         fileName: () => 'redditify.min.js'
       },
       rollupOptions: {
-        // Mark date-fns as external for UMD build
-        external: ['date-fns'],
+        // Include date-fns in the UMD build
+        external: [],
         output: {
-          globals: {
-            'date-fns': 'dateFns'
-          },
+          globals: {},
           // Generate a standalone bundle with everything included
           manualChunks: undefined
         }
