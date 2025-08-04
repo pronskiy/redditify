@@ -58,7 +58,7 @@ export default defineConfig(({ command, mode }) => {
         entry: resolve(__dirname, 'src/vanilla/auto-embed.js'),
         formats: ['umd'],
         name: 'RedditThreadViewer',
-        fileName: () => 'redditify.umd.js'
+        fileName: () => 'redditify.min.js'
       },
       rollupOptions: {
         // Mark date-fns as external for UMD build
