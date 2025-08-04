@@ -38,6 +38,17 @@
   </div>
   
   <div class="test-container">
+      <h2>Test 1.1</h2>
+      <div
+              class="thread-container"
+              data-reddit-thread="https://www.reddit.com/r/PHP/comments/1l7v0df/30_years_of_php_frankenphp_is_now_part_of_the_php/"
+              data-reddit-max-depth="10"
+              data-reddit-show-content="false"
+              data-reddit-show-controls="true"
+      ></div>
+  </div>
+  
+  <div class="test-container">
     <h2>Test 2: Custom Depth (2 levels)</h2>
     <div 
       data-reddit-thread="https://www.reddit.com/r/PHP/comments/1m78ww6/morethanone_class_per_file_motoautoload"
@@ -74,6 +85,31 @@
       data-reddit-show-content="true"
       data-reddit-show-controls="true"
     ></div>
+  </div>
+  
+  <div class="test-container">
+    <h2>Test 7: Caddyfile Code Block Test</h2>
+    <div class="reddit-thread">
+      <div class="reddit-post-content">
+        <div class="reddit-post-text">
+          <p>Here's an example of a Caddyfile configuration:</p>
+          <pre><code class="language-Caddyfile">my.domain.tld {
+    root /path/to/app/public
+    encoding zstd br gz
+    php_server
+}
+
+# or
+my.domain.tld {
+    encoding zstd br gz
+    php_server {
+        root /path/to/app/public
+        worker index.php
+    }
+}</code></pre>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
 </html>
