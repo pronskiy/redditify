@@ -1,6 +1,6 @@
 {
   "name": "redditify",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A vanilla JS package for embedding Reddit threads on any webpage",
   "main": "dist/redditify.min.js",
   "module": "dist/redditify.min.js",
