@@ -1,0 +1,13 @@
+name = "redditify-proxy"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+# Optional: Add custom domain
+# routes = [
+#   { pattern = "reddit-proxy.yourdomain.com", custom_domain = true }
+# ]
+
+# Optional: KV namespace for extended caching
+# [[kv_namespaces]]
+# binding = "REDDIT_CACHE"
+# id = "your-kv-namespace-id"
