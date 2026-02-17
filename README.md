@@ -8,11 +8,12 @@ The package fetches JSON data from Reddit and renders a UI that resembles the or
 
 - 🧵 Render any Reddit thread by providing its URL
 - 💫 No Reddit API key needed
-- 🍦 Vanilla JS, ony 1 external dependency
+- 🍦 Vanilla JS, only 1 external dependency
 - 📱 Responsive design that works on mobile and desktop
 - 🧩 Easy to embed on any webpage
 - 📂 Collapsible comments - hide/show comment content and replies
 - 🔗 Optional attribution link - can be turned on/off
+- 🚀 Built-in proxy support for reliable data fetching
 
 ## Installation
 
@@ -152,6 +153,46 @@ When using the `createRedditThread` function, you can pass the following options
 | `showCommentControls` | `boolean` | `true` | Whether to show comment controls (collapse, etc.) |
 | `showAttribution` | `boolean` | `true` | Whether to show the attribution link at the bottom |
 | `onError` | `(error: Error) => void` | `undefined` | Callback function when an error occurs |
+
+## Proxy Configuration
+
+Redditify uses a proxy server to fetch Reddit data, avoiding CORS and rate limiting issues. By default, it uses a hosted proxy, but you can deploy your own for production use.
+
+### Using the Default Proxy
+
+The library works out of the box with the default proxy. No configuration needed.
+
+### Deploying Your Own Proxy (Recommended for Production)
+
+For production use, deploy your own Cloudflare Worker proxy:
+
+```bash
+cd worker
+npm install
+npx wrangler login
+npm run deploy
+```
+
+Then configure Redditify to use your proxy:
+
+```html
+<script>
+  window.REDDITIFY_PROXY_URL = 'https://your-worker.your-subdomain.workers.dev';
+</script>
+<script src="https://unpkg.com/redditify/dist/redditify.min.js"></script>
+```
+
+### Disabling the Proxy
+
+To fetch directly from Reddit (may fail due to CORS in browsers):
+
+```html
+<script>
+  window.REDDITIFY_PROXY_URL = null;
+</script>
+```
+
+See [worker/README.md](worker/README.md) for detailed proxy documentation.
 
 ## Development
 
