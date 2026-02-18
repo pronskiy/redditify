@@ -50,6 +50,12 @@
       margin-bottom: 8px;
     }
   </style>
+  <script>
+    // Use local worker in dev (has /search endpoint), deployed worker in production
+    window.REDDITIFY_PROXY_URL = window.location.hostname === 'localhost'
+      ? 'http://localhost:8788'
+      : 'https://redditify-proxy.root-8f3.workers.dev';
+  </script>
   <!-- Load our auto-embed script (this would be the built version in production) -->
   <script type="module">
     // In production, this would be a direct script tag to the built file
@@ -147,14 +153,40 @@
     <div class="demo-section">
       <h2>Without Attribution Link</h2>
       <p>Hide the attribution link at the bottom using <code>data-reddit-show-attribution="false"</code>:</p>
-      
-      <div 
+
+      <div
         class="thread-container"
         data-reddit-thread="https://www.reddit.com/r/PHP/comments/1mgg1hf/swf_parser_and_extractor_in_php/"
         data-reddit-max-depth="5"
         data-reddit-show-content="true"
         data-reddit-show-controls="true"
         data-reddit-show-attribution="false"
+      ></div>
+    </div>
+
+    <div class="demo-section">
+      <h2>Auto-Search: Found Thread</h2>
+      <p>Use <code>data-reddit-search</code> to automatically search a subreddit for a URL. If a matching thread exists, it renders the full thread:</p>
+
+      <div
+        class="thread-container"
+        data-reddit-search="PHP"
+        data-reddit-url="https://thephp.foundation/blog/2024/08/19/state-of-generics-and-collections/"
+        data-reddit-suggest-title="State of Generics and Collections"
+        data-reddit-max-depth="5"
+        data-reddit-show-content="true"
+        data-reddit-show-controls="true"
+      ></div>
+    </div>
+
+    <div class="demo-section">
+      <h2>Auto-Search: Not Found</h2>
+      <p>When no thread is found for the URL, a compact "Discuss on Reddit" prompt is shown:</p>
+
+      <div
+        class="thread-container"
+        data-reddit-search="PHP"
+        data-reddit-suggest-title="Example Article Title"
       ></div>
     </div>
   </div>
