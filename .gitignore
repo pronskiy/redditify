@@ -34,3 +34,7 @@ pnpm-debug.log*
 
 # TypeScript
 *.tsbuildinfo
+/.playwright-mcp/
+/.claude/
+/worker/node_modules/
+/worker/.wrangler/

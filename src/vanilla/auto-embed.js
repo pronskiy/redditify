@@ -21,7 +21,7 @@
  * - data-reddit-show-attribution: (optional) Whether to show the attribution link at the bottom (default: true)
  */
 
-import { createRedditThread } from './reddit-thread';
+import { createRedditThread, searchAndRenderThread } from './reddit-thread';
 import '../styles/vanilla.css';
 
 // Function to inject CSS styles
@@ -141,6 +141,81 @@ function injectStyles() {
     .loading-pulse > * {
       animation: pulse 1.5s ease-in-out infinite;
     }
+
+    /* Search prompt styles */
+    .reddit-search-prompt {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      border-radius: 0.375rem;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      background-color: white;
+      color: #1a1a1b;
+    }
+
+    .reddit-search-prompt-content {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+    }
+
+    .reddit-search-prompt-icon {
+      flex-shrink: 0;
+      color: #787c7e;
+    }
+
+    .reddit-search-prompt-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .reddit-search-prompt-heading {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #1a1a1b;
+    }
+
+    .reddit-search-prompt-subtext {
+      font-size: 0.75rem;
+      color: #787c7e;
+    }
+
+    .reddit-search-prompt-button {
+      flex-shrink: 0;
+      display: inline-block;
+      background-color: #ff4500;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.375rem 0.875rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .reddit-search-prompt-button:hover {
+      background-color: #e03d00;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .reddit-search-prompt {
+        background-color: #1a1a1b;
+        border-color: #343536;
+        color: #d7dadc;
+      }
+
+      .reddit-search-prompt-icon {
+        color: #818384;
+      }
+
+      .reddit-search-prompt-heading {
+        color: #d7dadc;
+      }
+
+      .reddit-search-prompt-subtext {
+        color: #818384;
+      }
+    }
   `;
   
   // Add the style element to the head
@@ -201,6 +276,47 @@ function initRedditThreads() {
       element.innerHTML = `
         <div class="reddit-thread-error">
           Error rendering Reddit thread: ${error instanceof Error ? error.message : 'Unknown error'}
+        </div>
+      `;
+    }
+  });
+
+  // Find all elements with the data-reddit-search attribute
+  const searchElements = document.querySelectorAll('[data-reddit-search]');
+
+  searchElements.forEach((element) => {
+    const subreddit = element.getAttribute('data-reddit-search');
+
+    if (!subreddit) {
+      console.error('Reddit Thread Viewer: Missing subreddit in data-reddit-search attribute');
+      return;
+    }
+
+    const url = element.getAttribute('data-reddit-url') || window.location.href;
+    const suggestTitle = element.getAttribute('data-reddit-suggest-title') || document.title;
+    const maxDepth = parseInt(element.getAttribute('data-reddit-max-depth') || '5', 10);
+    const showContent = element.getAttribute('data-reddit-show-content') !== 'false';
+    const showControls = element.getAttribute('data-reddit-show-controls') !== 'false';
+    const showAttribution = element.getAttribute('data-reddit-show-attribution') !== 'false';
+
+    try {
+      searchAndRenderThread({
+        subreddit,
+        url,
+        suggestTitle,
+        maxCommentDepth: maxDepth,
+        showPostContent: showContent,
+        showCommentControls: showControls,
+        showAttribution,
+        onError: (error) => {
+          console.error('Error searching Reddit:', error);
+        }
+      }, element);
+    } catch (error) {
+      console.error('Error rendering Reddit search:', error);
+      element.innerHTML = `
+        <div class="reddit-thread-error">
+          Error searching Reddit: ${error instanceof Error ? error.message : 'Unknown error'}
         </div>
       `;
     }

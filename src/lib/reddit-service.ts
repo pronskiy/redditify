@@ -1,5 +1,5 @@
 import { getRedditJson } from './utils';
-import { RedditThreadResponse, RedditCommentsResponse } from './types';
+import { RedditThreadResponse, RedditCommentsResponse, RedditSearchResponse, RedditPost } from './types';
 
 // Default proxy URL - users should deploy their own worker and update this
 // or set window.REDDITIFY_PROXY_URL before loading the script
@@ -84,6 +84,52 @@ export async function fetchRedditThread(
     }
     
     console.error('Error fetching Reddit thread:', error);
+    throw error;
+  }
+}
+
+export async function searchSubredditForUrl(
+  subreddit: string,
+  searchUrl: string,
+  options: FetchOptions = {}
+): Promise<RedditPost | null> {
+  const { proxyUrl = getProxyUrl(), timeout = 10000 } = options;
+
+  try {
+    let fetchUrl: string;
+
+    if (proxyUrl) {
+      fetchUrl = `${proxyUrl}/search?subreddit=${encodeURIComponent(subreddit)}&url=${encodeURIComponent(searchUrl)}&sort=top`;
+    } else {
+      fetchUrl = `https://www.reddit.com/r/${encodeURIComponent(subreddit)}/search.json?q=url:${encodeURIComponent(searchUrl)}&restrict_sr=on&sort=top`;
+    }
+
+    const response = await fetchWithTimeout(fetchUrl, timeout);
+
+    if (!response.ok) {
+      throw new Error(`Search failed: ${response.status} ${response.statusText}`);
+    }
+
+    const data: RedditSearchResponse = await response.json();
+
+    if (data.data.children.length === 0) {
+      return null;
+    }
+
+    return data.data.children[0];
+  } catch (error) {
+    // If proxy fails, attempt direct fetch as fallback
+    if (proxyUrl && options.proxyUrl === undefined) {
+      console.warn('Proxy search failed, attempting direct fetch:', error);
+      try {
+        return await searchSubredditForUrl(subreddit, searchUrl, { ...options, proxyUrl: null });
+      } catch (directError) {
+        console.error('Direct search also failed:', directError);
+        throw error;
+      }
+    }
+
+    console.error('Error searching subreddit:', error);
     throw error;
   }
 }

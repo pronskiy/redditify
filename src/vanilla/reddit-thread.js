@@ -3,7 +3,7 @@
  * This replaces the React-based implementation
  */
 
-import { fetchRedditThread, parseRedditHtml } from '../lib/reddit-service';
+import { fetchRedditThread, parseRedditHtml, searchSubredditForUrl } from '../lib/reddit-service';
 import { formatRedditDate, formatScore } from '../lib/utils';
 
 /**
@@ -374,4 +374,111 @@ function createCommentItem(comment, maxDepth, showControls, currentDepth) {
       ${childComments}
     </li>
   `;
+}
+
+/**
+ * Renders a "not found" prompt with a link to submit on Reddit
+ * @param {Object} options - Configuration options
+ * @param {string} options.subreddit - Subreddit name
+ * @param {string} options.url - URL that was searched for
+ * @param {string} options.suggestTitle - Suggested title for Reddit submit
+ * @param {boolean} options.showAttribution - Whether to show the attribution link
+ * @param {HTMLElement} container - Container element
+ */
+function renderSearchNotFound(options, container) {
+  const { subreddit, url, suggestTitle, showAttribution } = options;
+  const submitUrl = `https://www.reddit.com/r/${encodeURIComponent(subreddit)}/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(suggestTitle)}`;
+
+  let attributionSection = '';
+  if (showAttribution) {
+    attributionSection = `
+      <div class="reddit-attribution">
+        Rendered with <a href="https://github.com/pronskiy/redditify" target="_blank" rel="noopener noreferrer">redditify</a>
+      </div>
+    `;
+  }
+
+  container.className = 'redditify reddit-search-prompt';
+  container.innerHTML = `
+    <div class="reddit-search-prompt-content">
+      <div class="reddit-search-prompt-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H5.17L4 17.17V4H20V16Z" fill="currentColor"/>
+          <path d="M12 14C12.55 14 13 13.55 13 13C13 12.45 12.55 12 12 12C11.45 12 11 12.45 11 13C11 13.55 11.45 14 12 14Z" fill="currentColor"/>
+          <path d="M13 6H11V11H13V6Z" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="reddit-search-prompt-text">
+        <div class="reddit-search-prompt-heading">No discussion found on r/${subreddit}</div>
+        <div class="reddit-search-prompt-subtext">Be the first to share this on Reddit</div>
+      </div>
+      <a href="${submitUrl}" target="_blank" rel="noopener noreferrer" class="reddit-search-prompt-button">
+        Discuss on Reddit
+      </a>
+    </div>
+    ${attributionSection}
+  `;
+}
+
+/**
+ * Searches for a URL in a subreddit and renders the thread or a prompt
+ * @param {Object} options - Configuration options
+ * @param {string} options.subreddit - Subreddit name
+ * @param {string} options.url - URL to search for
+ * @param {string} options.suggestTitle - Suggested title for Reddit submit
+ * @param {number} options.maxCommentDepth - Maximum depth of comments to display
+ * @param {boolean} options.showPostContent - Whether to show the post content
+ * @param {boolean} options.showCommentControls - Whether to show comment controls
+ * @param {boolean} options.showAttribution - Whether to show the attribution link
+ * @param {Function} options.onError - Error callback function
+ * @param {HTMLElement} container - Container element
+ */
+export async function searchAndRenderThread(options, container) {
+  const {
+    subreddit,
+    url,
+    suggestTitle = '',
+    maxCommentDepth = 5,
+    showPostContent = true,
+    showCommentControls = true,
+    showAttribution = true,
+    onError
+  } = options;
+
+  // Show loading state
+  renderLoadingState(container);
+
+  try {
+    const post = await searchSubredditForUrl(subreddit, url);
+
+    if (post) {
+      // Found a thread - fetch full thread with comments
+      const threadUrl = `https://www.reddit.com${post.data.permalink}`;
+      const [threadData, commentsData] = await fetchRedditThread(threadUrl);
+
+      if (threadData.data.children.length === 0) {
+        renderSearchNotFound({ subreddit, url, suggestTitle, showAttribution }, container);
+        return;
+      }
+
+      const fullPost = threadData.data.children[0];
+      const comments = commentsData.data.children;
+
+      renderThread(fullPost, comments, {
+        maxCommentDepth,
+        showPostContent,
+        showCommentControls,
+        showAttribution
+      }, container);
+    } else {
+      // No thread found - show prompt
+      renderSearchNotFound({ subreddit, url, suggestTitle, showAttribution }, container);
+    }
+  } catch (error) {
+    console.error('Error searching for Reddit thread:', error);
+    renderErrorState(container, error);
+    if (onError) {
+      onError(error);
+    }
+  }
 }

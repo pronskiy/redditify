@@ -186,6 +186,70 @@ export default {
       }
     }
     
+    // Search endpoint: /search?subreddit=<name>&url=<encoded_url>&sort=<sort>
+    if (url.pathname === '/search') {
+      const subreddit = url.searchParams.get('subreddit');
+      const searchUrl = url.searchParams.get('url');
+      const sort = url.searchParams.get('sort') || 'top';
+
+      if (!subreddit) {
+        return errorResponse('Missing "subreddit" parameter', 400);
+      }
+
+      if (!searchUrl) {
+        return errorResponse('Missing "url" parameter', 400);
+      }
+
+      if (!/^[a-zA-Z0-9_]{1,21}$/.test(subreddit)) {
+        return errorResponse('Invalid subreddit name', 400);
+      }
+
+      const validSorts = ['relevance', 'top', 'new', 'comments'];
+      if (!validSorts.includes(sort)) {
+        return errorResponse('Invalid sort parameter. Allowed: relevance, top, new, comments', 400);
+      }
+
+      // Check cache first
+      const cache = caches.default;
+      let cachedResponse = await cache.match(request);
+      if (cachedResponse) {
+        const headers = new Headers(cachedResponse.headers);
+        headers.set('X-Cache', 'HIT');
+        return new Response(cachedResponse.body, {
+          status: cachedResponse.status,
+          headers,
+        });
+      }
+
+      // Build Reddit search URL
+      const redditSearchUrl = `https://www.reddit.com/r/${subreddit}/search.json?q=url:${encodeURIComponent(searchUrl)}&restrict_sr=on&sort=${sort}`;
+
+      try {
+        const redditResponse = await fetchWithRetry(redditSearchUrl);
+
+        if (!redditResponse.ok) {
+          return errorResponse(
+            `Reddit API error: ${redditResponse.status} ${redditResponse.statusText}`,
+            redditResponse.status >= 500 ? 502 : redditResponse.status
+          );
+        }
+
+        const data = await redditResponse.json();
+
+        const response = jsonResponse(data, 200, {
+          'X-Cache': 'MISS',
+          'Cache-Control': `public, max-age=${CACHE_TTL}`,
+        });
+
+        ctx.waitUntil(cache.put(request, response.clone()));
+
+        return response;
+      } catch (error) {
+        console.error('Search proxy error:', error);
+        return errorResponse('Failed to search Reddit', 502);
+      }
+    }
+
     // 404 for unknown paths
     return errorResponse('Not found', 404);
   },

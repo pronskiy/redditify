@@ -67,6 +67,15 @@ export interface RedditComment {
   };
 }
 
+export interface RedditSearchResponse {
+  kind: string;
+  data: {
+    children: RedditPost[];
+    after: string | null;
+    dist: number;
+  };
+}
+
 export interface RedditThreadViewerProps {
   url: string;
   className?: string;

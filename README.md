@@ -193,7 +193,6 @@ To fetch directly from Reddit (may fail due to CORS in browsers):
 ```
 
 See [worker/README.md](worker/README.md) for detailed proxy documentation.
-
 ## Development
 
 ### Setup
