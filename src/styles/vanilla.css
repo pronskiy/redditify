@@ -468,7 +468,13 @@
   .reddit-attribution a:hover {
     color: #7ab5ff;
   }
-  
+
+  .comment-body,
+  .comment-body p,
+  .comment-body li {
+    color: #d7dadc;
+  }
+
   .comment-body pre,
   .comment-body code,
   .reddit-post-text pre,
