@@ -185,6 +185,15 @@
   line-height: 1.25rem;
 }
 
+/* Explicit text color so host-page element rules (e.g. `p { color: ... }`)
+   can't override the inherited theme color */
+.reddit-comment-body,
+.reddit-post-text,
+.reddit-comment-body :where(*),
+.reddit-post-text :where(*) {
+  color: #1a1a1b;
+}
+
 .reddit-comment-controls {
   margin-top: 0.5rem;
   font-size: 0.75rem;
@@ -439,6 +448,13 @@
   
   .reddit-comment-content {
     background-color: #272729;
+  }
+
+  .reddit-comment-body,
+  .reddit-post-text,
+  .reddit-comment-body :where(*),
+  .reddit-post-text :where(*) {
+    color: #d7dadc;
   }
   
   .reddit-comment-list .reddit-comment-list {
