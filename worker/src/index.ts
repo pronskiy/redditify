@@ -8,11 +8,52 @@
 export interface Env {
   // KV namespace for caching (optional, falls back to Cache API)
   REDDIT_CACHE?: KVNamespace;
+  // Reddit OAuth app credentials (wrangler secret put REDDIT_CLIENT_ID / REDDIT_CLIENT_SECRET).
+  // Required since Reddit blocks unauthenticated JSON API access from datacenter IPs.
+  REDDIT_CLIENT_ID?: string;
+  REDDIT_CLIENT_SECRET?: string;
 }
 
 const CACHE_TTL = 300; // 5 minutes
 const MAX_RETRIES = 2;
 const RETRY_DELAY = 1000;
+const USER_AGENT = 'web:redditify-proxy:1.0 (by /u/pronskiy; +https://github.com/pronskiy/redditify)';
+
+// Module-scope token cache; persists across requests within a worker isolate
+let tokenCache: { token: string; expiresAt: number } | null = null;
+
+async function getAccessToken(env: Env): Promise<string | null> {
+  if (!env.REDDIT_CLIENT_ID || !env.REDDIT_CLIENT_SECRET) {
+    return null;
+  }
+
+  if (tokenCache && tokenCache.expiresAt > Date.now()) {
+    return tokenCache.token;
+  }
+
+  const response = await fetch('https://www.reddit.com/api/v1/access_token', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${btoa(`${env.REDDIT_CLIENT_ID}:${env.REDDIT_CLIENT_SECRET}`)}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'User-Agent': USER_AGENT,
+    },
+    body: 'grant_type=client_credentials',
+  });
+
+  if (!response.ok) {
+    throw new Error(`Reddit token request failed: ${response.status}`);
+  }
+
+  const data = await response.json() as { access_token: string; expires_in: number };
+  tokenCache = {
+    token: data.access_token,
+    // Refresh 60s before actual expiry
+    expiresAt: Date.now() + (data.expires_in - 60) * 1000,
+  };
+
+  return data.access_token;
+}
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -36,11 +77,19 @@ function errorResponse(message: string, status = 500) {
   return jsonResponse({ error: message }, status);
 }
 
-async function fetchWithRetry(url: string, retries = MAX_RETRIES): Promise<Response> {
-  const headers = {
-    'User-Agent': 'Mozilla/5.0 (compatible; Redditify/1.0; +https://github.com/pronskiy/redditify)',
+async function fetchWithRetry(url: string, env: Env, retries = MAX_RETRIES): Promise<Response> {
+  const headers: Record<string, string> = {
+    'User-Agent': USER_AGENT,
     'Accept': 'application/json',
   };
+
+  // With OAuth credentials, use the authenticated API host — the public
+  // www.reddit.com JSON endpoints return 403 for datacenter IPs.
+  const token = await getAccessToken(env);
+  if (token) {
+    url = url.replace('https://www.reddit.com/', 'https://oauth.reddit.com/');
+    headers['Authorization'] = `Bearer ${token}`;
+  }
 
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
@@ -159,7 +208,7 @@ export default {
       
       // Fetch from Reddit
       try {
-        const redditResponse = await fetchWithRetry(parsedUrl);
+        const redditResponse = await fetchWithRetry(parsedUrl, env);
         
         if (!redditResponse.ok) {
           return errorResponse(
@@ -225,7 +274,7 @@ export default {
       const redditSearchUrl = `https://www.reddit.com/r/${subreddit}/search.json?q=url:${encodeURIComponent(searchUrl)}&restrict_sr=on&sort=${sort}`;
 
       try {
-        const redditResponse = await fetchWithRetry(redditSearchUrl);
+        const redditResponse = await fetchWithRetry(redditSearchUrl, env);
 
         if (!redditResponse.ok) {
           return errorResponse(

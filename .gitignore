@@ -38,3 +38,4 @@ pnpm-debug.log*
 /.claude/
 /worker/node_modules/
 /worker/.wrangler/
+/worker/.env

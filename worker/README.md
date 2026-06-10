@@ -24,7 +24,27 @@ npm install -g wrangler
 wrangler login
 ```
 
-### 3. Deploy
+### 3. Configure Reddit OAuth credentials (required)
+
+Reddit blocks unauthenticated JSON API access from datacenter IPs (including
+Cloudflare Workers), so the worker authenticates via Reddit's application-only
+OAuth flow.
+
+1. Go to https://www.reddit.com/prefs/apps and click "create another app..."
+2. Choose type **script**, any name, and `http://localhost` as redirect URI
+3. Note the client ID (under the app name) and the secret
+4. Set them as worker secrets:
+
+```bash
+cd worker
+wrangler secret put REDDIT_CLIENT_ID
+wrangler secret put REDDIT_CLIENT_SECRET
+```
+
+The free OAuth tier allows 100 queries/minute per client — comfortable with
+the worker's 5-minute response cache.
+
+### 4. Deploy
 
 ```bash
 cd worker
