@@ -4,10 +4,12 @@ A vanilla JavaScript package that allows rendering arbitrary Reddit threads on a
 
 The package fetches JSON data from Reddit and renders a UI that resembles the original Reddit thread design.
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/pronskiy/redditify/main/docs/demo-dark.png">
-  <img alt="Redditify rendering an r/PHP thread with nested replies" src="https://raw.githubusercontent.com/pronskiy/redditify/main/docs/demo-light.png" width="720">
-</picture>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/pronskiy/redditify/main/docs/demo-dark.png">
+    <img alt="Redditify rendering an r/PHP thread with nested replies" src="https://raw.githubusercontent.com/pronskiy/redditify/main/docs/demo-light.png" width="600">
+  </picture>
+</p>
 
 ## Features
 
