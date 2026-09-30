@@ -155,7 +155,8 @@
 
 .reddit-comment-content {
   padding: 0.5rem;
-  border-radius: 0.25rem;
+  /* Square left edge so the colored border reads as a straight thread line */
+  border-radius: 0 0.25rem 0.25rem 0;
   /*background-color: #f6f7f8;*/
   margin-bottom: 0.5rem;
 }
@@ -249,11 +250,16 @@
   text-decoration: underline;
 }
 
-/* Nested comments */
+/* Nested comments: one line per level, with each reply's colored border
+   drawn over the grey thread line */
 .reddit-comment-list .reddit-comment-list {
   margin-left: 1rem;
   border-left: 2px solid #e5e7eb;
-  padding-left: 0.5rem;
+  padding-left: 0;
+}
+
+.reddit-comment-list .reddit-comment-list > .reddit-comment > .reddit-comment-content {
+  margin-left: -2px;
 }
 
 /* Comment depth colors */
