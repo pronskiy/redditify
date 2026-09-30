@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dark mode repro: host page element styles leaking into the widget</title>
+  <!-- Needs `npm run build` first: links ../dist/redditify.css (dist/ is gitignored) -->
+  <!-- Host-page CSS (mimics thephp.foundation app.css) -->
+  <style>
+    body { background: white; }
+    li, p {
+      font-size: 1rem;
+      line-height: 1.625;
+      color: rgb(39 39 42);
+    }
+    blockquote { background-color: rgb(254 252 232); }
+    blockquote p { padding: 1rem 2rem; margin-bottom: 0; }
+
+    /* Other common host quote styles: themes and Tailwind Typography (body has class="prose") */
+    blockquote { border: 1px solid rgb(212 212 216); border-radius: 0.5rem; box-shadow: 0 1px 3px rgb(0 0 0 / 0.2); }
+    blockquote::before { content: "\201C"; font-size: 3em; }
+    .prose :where(blockquote) { font-style: italic; font-weight: 500; quotes: "\201C" "\201D" "\2018" "\2019"; }
+    .prose :where(blockquote p:first-of-type)::before { content: open-quote; }
+    .prose :where(blockquote p:last-of-type)::after { content: close-quote; }
+  </style>
+  <link rel="stylesheet" href="../dist/redditify.css">
+</head>
+<body class="prose">
+  <p>Host page paragraph (dark text on white — fine).</p>
+
+  <!-- Static markup matching what reddit-thread.js renders -->
+  <div class="redditify reddit-thread">
+    <div class="reddit-post-header">
+      <h2 class="reddit-post-title"><a href="#">Welcoming Matt Stauffer to The PHP Foundation Board</a></h2>
+    </div>
+    <div class="reddit-post-content">
+      <div class="reddit-post-text">
+        <p id="post-text-p">Post selftext paragraph.</p>
+        <blockquote><p id="post-quote-p">Quoted post text must be readable too.</p></blockquote>
+      </div>
+    </div>
+    <div class="reddit-comments">
+      <ul class="reddit-comment-list depth-1">
+        <li class="reddit-comment" id="comment-abc">
+          <div class="reddit-comment-content">
+            <div class="reddit-comment-header">
+              <span class="reddit-comment-collapse-button">[−]</span>
+              <a href="#" class="reddit-comment-author">DvD_cD</a>
+              <span class="reddit-comment-score">6 points</span>
+            </div>
+            <div class="reddit-comment-body comment-body">
+              <blockquote><p id="comment-quote-p">Quoted comment text must be readable in dark mode.</p></blockquote>
+              <p id="comment-p">This comment text must be readable in dark mode.</p>
+              <ul><li id="comment-li">And list items too.</li></ul>
+            </div>
+            <div class="reddit-comment-controls"><a href="#">Permalink</a></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

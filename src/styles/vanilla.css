@@ -194,6 +194,47 @@
   color: #1a1a1b;
 }
 
+/* Own quote style so host `blockquote` rules (background, padding, borders,
+   italics, quote marks) don't leak in */
+.reddit-comment-body blockquote,
+.reddit-post-text blockquote {
+  margin: 0.5rem 0;
+  padding: 0.5rem 0.75rem;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: #fefce8;
+  font-style: normal;
+  font-weight: inherit;
+  quotes: none;
+}
+
+.reddit-comment-body blockquote p,
+.reddit-post-text blockquote p {
+  padding: 0;
+}
+
+.reddit-comment-body blockquote > :first-child,
+.reddit-post-text blockquote > :first-child {
+  margin-top: 0;
+}
+
+.reddit-comment-body blockquote > :last-child,
+.reddit-post-text blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.reddit-comment-body blockquote::before,
+.reddit-comment-body blockquote::after,
+.reddit-comment-body blockquote p::before,
+.reddit-comment-body blockquote p::after,
+.reddit-post-text blockquote::before,
+.reddit-post-text blockquote::after,
+.reddit-post-text blockquote p::before,
+.reddit-post-text blockquote p::after {
+  content: none;
+}
+
 .reddit-comment-controls {
   margin-top: 0.5rem;
   font-size: 0.75rem;
@@ -455,6 +496,11 @@
   .reddit-comment-body :where(*),
   .reddit-post-text :where(*) {
     color: #d7dadc;
+  }
+
+  .reddit-comment-body blockquote,
+  .reddit-post-text blockquote {
+    background: rgba(250, 204, 21, 0.08);
   }
   
   .reddit-comment-list .reddit-comment-list {
