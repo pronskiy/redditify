@@ -101,6 +101,25 @@ You can customize the thread display with additional data attributes:
 ></div>
 ```
 
+#### Find the Thread for the Current Page
+
+Instead of a fixed thread URL, Redditify can search a subreddit for a post linking to the current page and render that thread. If there's no such post yet, it shows a "Discuss on Reddit" button that opens the submit form with the link and title pre-filled.
+
+```html
+<div 
+  data-reddit-search="PHP"
+  data-reddit-suggest-title="My blog post title"
+></div>
+```
+
+| Attribute | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `data-reddit-search` | String | (required) | Subreddit to search, without `r/` |
+| `data-reddit-url` | URL | current page URL | URL to look for |
+| `data-reddit-suggest-title` | String | page title | Title pre-filled when submitting to Reddit |
+
+The `data-reddit-max-depth` and `data-reddit-show-*` attributes work here too.
+
 ### JavaScript API Usage
 
 If you need more control, you can use the JavaScript API directly:

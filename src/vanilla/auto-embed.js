@@ -19,6 +19,9 @@
  * - data-reddit-show-content: (optional) Whether to show the post content (default: true)
  * - data-reddit-show-controls: (optional) Whether to show comment controls (default: true)
  * - data-reddit-show-attribution: (optional) Whether to show the attribution link at the bottom (default: true)
+ *
+ * Elements with data-reddit-search="<subreddit>" instead find the thread linking to
+ * the current page (or data-reddit-url) and render it.
  */
 
 import { createRedditThread, searchAndRenderThread } from './reddit-thread';
@@ -230,13 +233,9 @@ function initRedditThreads() {
   }
   
   // Find all elements with the data-reddit-thread attribute
-  const threadElements = document.querySelectorAll('[data-reddit-thread]');
-  
-  // If no elements found, exit
-  if (threadElements.length === 0) {
-    return;
-  }
-  
+  // (search embeds are handled below, even if they also carry data-reddit-thread)
+  const threadElements = document.querySelectorAll('[data-reddit-thread]:not([data-reddit-search])');
+
   // Process each element
   threadElements.forEach((element) => {
     // Get the URL from the data attribute
