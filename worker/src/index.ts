@@ -19,10 +19,15 @@ const MAX_RETRIES = 2;
 const RETRY_DELAY = 1000;
 const USER_AGENT = 'web:redditify-proxy:1.0 (by /u/pronskiy; +https://github.com/pronskiy/redditify)';
 
-// Module-scope token cache; persists across requests within a worker isolate
-let tokenCache: { token: string; expiresAt: number } | null = null;
+type Token = { token: string; expiresAt: number };
 
-async function getAccessToken(env: Env): Promise<string | null> {
+// Module-scope token cache; persists across requests within a worker isolate.
+// Isolates are short-lived, so the token is also shared per colo via the Cache API:
+// Reddit rate-limits token requests (429) when every new isolate asks for its own.
+let tokenCache: Token | null = null;
+let tokenRequest: Promise<string> | null = null;
+
+async function getAccessToken(env: Env, origin: string): Promise<string | null> {
   if (!env.REDDIT_CLIENT_ID || !env.REDDIT_CLIENT_SECRET) {
     return null;
   }
@@ -31,28 +36,79 @@ async function getAccessToken(env: Env): Promise<string | null> {
     return tokenCache.token;
   }
 
-  const response = await fetch('https://www.reddit.com/api/v1/access_token', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Basic ${btoa(`${env.REDDIT_CLIENT_ID}:${env.REDDIT_CLIENT_SECRET}`)}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'User-Agent': USER_AGENT,
-    },
-    body: 'grant_type=client_credentials',
-  });
+  // Not reachable by clients: the handlers only match the cache against their own request URLs
+  const cacheKey = `${origin}/__reddit-oauth-token`;
+  const shared = await readSharedToken(cacheKey);
+  if (shared) {
+    tokenCache = shared;
+    return shared.token;
+  }
 
-  if (!response.ok) {
+  if (tokenCache && tokenCache.expiresAt > Date.now()) {
+    return tokenCache.token;
+  }
+
+  // Concurrent requests in this isolate wait for the same token request
+  tokenRequest ??= requestToken(env, cacheKey).finally(() => {
+    tokenRequest = null;
+  });
+  return tokenRequest;
+}
+
+async function readSharedToken(cacheKey: string): Promise<Token | null> {
+  try {
+    const cached = await caches.default.match(cacheKey);
+    if (!cached) {
+      return null;
+    }
+    const token = await cached.json() as Token;
+    return token.expiresAt > Date.now() ? token : null;
+  } catch {
+    return null;
+  }
+}
+
+async function requestToken(env: Env, cacheKey: string): Promise<string> {
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    const response = await fetch('https://www.reddit.com/api/v1/access_token', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${btoa(`${env.REDDIT_CLIENT_ID}:${env.REDDIT_CLIENT_SECRET}`)}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'User-Agent': USER_AGENT,
+      },
+      body: 'grant_type=client_credentials',
+    });
+
+    if (response.ok) {
+      const data = await response.json() as { access_token: string; expires_in: number };
+      // Refresh 60s before actual expiry
+      const ttl = data.expires_in - 60;
+      tokenCache = { token: data.access_token, expiresAt: Date.now() + ttl * 1000 };
+      console.log('Fetched a new Reddit OAuth token');
+
+      try {
+        await caches.default.put(cacheKey, new Response(JSON.stringify(tokenCache), {
+          headers: { 'Cache-Control': `max-age=${ttl}` },
+        }));
+      } catch (error) {
+        console.error('Could not share Reddit OAuth token:', error);
+      }
+
+      return data.access_token;
+    }
+
+    // Rate limited or Reddit hiccup - back off and try again
+    if ((response.status === 429 || response.status >= 500) && attempt < MAX_RETRIES) {
+      console.warn(`Reddit token request got ${response.status}, retrying`);
+      await new Promise(r => setTimeout(r, RETRY_DELAY * (attempt + 1)));
+      continue;
+    }
+
     throw new Error(`Reddit token request failed: ${response.status}`);
   }
 
-  const data = await response.json() as { access_token: string; expires_in: number };
-  tokenCache = {
-    token: data.access_token,
-    // Refresh 60s before actual expiry
-    expiresAt: Date.now() + (data.expires_in - 60) * 1000,
-  };
-
-  return data.access_token;
+  throw new Error('Max retries exceeded');
 }
 
 const CORS_HEADERS = {
@@ -77,7 +133,7 @@ function errorResponse(message: string, status = 500) {
   return jsonResponse({ error: message }, status);
 }
 
-async function fetchWithRetry(url: string, env: Env, retries = MAX_RETRIES): Promise<Response> {
+async function fetchWithRetry(url: string, env: Env, origin: string, retries = MAX_RETRIES): Promise<Response> {
   const headers: Record<string, string> = {
     'User-Agent': USER_AGENT,
     'Accept': 'application/json',
@@ -85,7 +141,7 @@ async function fetchWithRetry(url: string, env: Env, retries = MAX_RETRIES): Pro
 
   // With OAuth credentials, use the authenticated API host — the public
   // www.reddit.com JSON endpoints return 403 for datacenter IPs.
-  const token = await getAccessToken(env);
+  const token = await getAccessToken(env, origin);
   if (token) {
     url = url.replace('https://www.reddit.com/', 'https://oauth.reddit.com/');
     headers['Authorization'] = `Bearer ${token}`;
@@ -208,7 +264,7 @@ export default {
       
       // Fetch from Reddit
       try {
-        const redditResponse = await fetchWithRetry(parsedUrl, env);
+        const redditResponse = await fetchWithRetry(parsedUrl, env, url.origin);
         
         if (!redditResponse.ok) {
           return errorResponse(
@@ -274,7 +330,7 @@ export default {
       const redditSearchUrl = `https://www.reddit.com/r/${subreddit}/search.json?q=url:${encodeURIComponent(searchUrl)}&restrict_sr=on&sort=${sort}`;
 
       try {
-        const redditResponse = await fetchWithRetry(redditSearchUrl, env);
+        const redditResponse = await fetchWithRetry(redditSearchUrl, env, url.origin);
 
         if (!redditResponse.ok) {
           return errorResponse(
