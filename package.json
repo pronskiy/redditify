@@ -1,6 +1,6 @@
 {
   "name": "redditify",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Embed Reddit threads on any webpage",
   "main": "dist/redditify.min.js",
   "module": "dist/redditify.min.js",
