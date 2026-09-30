@@ -231,7 +231,7 @@ export default {
         return response;
       } catch (error) {
         console.error('Proxy error:', error);
-        return errorResponse('Failed to fetch Reddit thread', 502);
+        return errorResponse(`Failed to fetch Reddit thread: ${String(error)}`, 502);
       }
     }
     
@@ -295,7 +295,7 @@ export default {
         return response;
       } catch (error) {
         console.error('Search proxy error:', error);
-        return errorResponse('Failed to search Reddit', 502);
+        return errorResponse(`Failed to search Reddit: ${String(error)}`, 502);
       }
     }
 

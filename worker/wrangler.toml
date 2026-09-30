@@ -2,6 +2,10 @@ name = "redditify-proxy"
 main = "src/index.ts"
 compatibility_date = "2024-01-01"
 
+# Persist console.log/error output so errors can be inspected after the fact
+[observability]
+enabled = true
+
 # Optional: Add custom domain
 # routes = [
 #   { pattern = "reddit-proxy.yourdomain.com", custom_domain = true }
