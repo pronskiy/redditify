@@ -122,7 +122,7 @@ Instead of a fixed thread URL, Redditify can search a subreddit for a post linki
 | Attribute | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `data-reddit-search` | String | (required) | Subreddit to search, without `r/` |
-| `data-reddit-url` | URL | current page URL | URL to look for |
+| `data-reddit-url` | URL | current page URL | URL to look for. The current page URL comes from `<link rel="canonical">`, then `og:url`, then the address bar. `utm_*` and other tracking params and the `#hash` are dropped. |
 | `data-reddit-suggest-title` | String | page title | Title pre-filled when submitting to Reddit |
 
 The `data-reddit-max-depth` and `data-reddit-show-*` attributes work here too.

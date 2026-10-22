@@ -4,7 +4,7 @@
  */
 
 import { fetchRedditThread, parseRedditHtml, searchSubredditForUrl } from '../lib/reddit-service';
-import { formatRedditDate, formatScore } from '../lib/utils';
+import { cleanUrl, formatRedditDate, formatScore } from '../lib/utils';
 
 /**
  * Creates a Reddit thread viewer
@@ -424,7 +424,7 @@ function renderSearchNotFound(options, container) {
  * Searches for a URL in a subreddit and renders the thread or a prompt
  * @param {Object} options - Configuration options
  * @param {string} options.subreddit - Subreddit name
- * @param {string} options.url - URL to search for
+ * @param {string} options.url - URL to search for (tracking params and #hash are ignored)
  * @param {string} options.suggestTitle - Suggested title for Reddit submit
  * @param {number} options.maxCommentDepth - Maximum depth of comments to display
  * @param {boolean} options.showPostContent - Whether to show the post content
@@ -436,7 +436,6 @@ function renderSearchNotFound(options, container) {
 export async function searchAndRenderThread(options, container) {
   const {
     subreddit,
-    url,
     suggestTitle = '',
     maxCommentDepth = 5,
     showPostContent = true,
@@ -444,6 +443,7 @@ export async function searchAndRenderThread(options, container) {
     showAttribution = true,
     onError
   } = options;
+  const url = cleanUrl(options.url);
 
   // Show loading state
   renderLoadingState(container);

@@ -5,7 +5,7 @@
 import { createRedditThread, searchAndRenderThread } from './reddit-thread';
 import { initRedditThreads } from './auto-embed';
 import { fetchRedditThread, parseRedditHtml, searchSubredditForUrl } from '../lib/reddit-service';
-import { formatRedditDate, formatScore, getRedditJson } from '../lib/utils';
+import { formatRedditDate, formatScore, getRedditJson, cleanUrl, getPageUrl } from '../lib/utils';
 
 // Export all the necessary functions
 export {
@@ -17,5 +17,7 @@ export {
   parseRedditHtml,
   formatRedditDate,
   formatScore,
-  getRedditJson
+  getRedditJson,
+  cleanUrl,
+  getPageUrl
 };

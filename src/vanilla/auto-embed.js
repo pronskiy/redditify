@@ -21,10 +21,13 @@
  * - data-reddit-show-attribution: (optional) Whether to show the attribution link at the bottom (default: true)
  *
  * Elements with data-reddit-search="<subreddit>" instead find the thread linking to
- * the current page (or data-reddit-url) and render it.
+ * the current page (or data-reddit-url) and render it. The current page is taken from
+ * <link rel="canonical">, then og:url, then location.href, without utm_* and other
+ * tracking params.
  */
 
 import { createRedditThread, searchAndRenderThread } from './reddit-thread';
+import { getPageUrl } from '../lib/utils';
 import '../styles/vanilla.css';
 
 // Function to inject CSS styles
@@ -291,7 +294,7 @@ function initRedditThreads() {
       return;
     }
 
-    const url = element.getAttribute('data-reddit-url') || window.location.href;
+    const url = element.getAttribute('data-reddit-url') || getPageUrl();
     const suggestTitle = element.getAttribute('data-reddit-suggest-title') || document.title;
     const maxDepth = parseInt(element.getAttribute('data-reddit-max-depth') || '5', 10);
     const showContent = element.getAttribute('data-reddit-show-content') !== 'false';
